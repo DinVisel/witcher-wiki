@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0f0d0b;        /* near-black background */
+  --color-ash: #1c1916;        /* card background */
+  --color-steel: #9aa4ad;      /* steel accents */
+  --color-silver: #d9dde0;     /* text */
+  --color-blood: #8b1e1e;      /* accent red */
+  --color-gold: #c9a24a;       /* medallion gold */
+  --color-parchment: #e9dcc0;  /* bestiary pages */
+  --color-igni: #ff6a1a;
+  --color-aard: #7fb3ff;
+  --color-quen: #ffc94a;
+  --color-yrden: #b26bff;
+  --color-axii: #4ad6a0;
+
+  --font-display: "Cinzel", serif;
+  --font-body: "Inter", sans-serif;
+
+  --animate-shockwave: shockwave 0.7s ease-out forwards;
+  --animate-shield: shield 1.2s ease-in-out infinite;
+  --animate-rune-spin: rune-spin 6s linear infinite;
+  --animate-medallion: medallion 1.6s ease-in-out infinite;
+  --animate-shake: shake 0.5s ease-in-out;
+  --animate-flash: flash 0.6s ease-out forwards;
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-fade-out: fade-out 1s ease-out forwards;
+
+  @keyframes shockwave { 0% { transform: scale(0.2); opacity: 0.9 } 100% { transform: scale(3); opacity: 0 } }
+  @keyframes shield { 0%,100% { transform: scale(1); opacity: 0.6 } 50% { transform: scale(1.06); opacity: 0.9 } }
+  @keyframes rune-spin { to { transform: rotate(360deg) } }
+  @keyframes medallion { 0%,100% { transform: rotate(-8deg) } 50% { transform: rotate(8deg) } }
+  @keyframes shake { 0%,100% { transform: translateX(0) } 20% { transform: translateX(-6px) } 40% { transform: translateX(6px) } 60% { transform: translateX(-4px) } 80% { transform: translateX(4px) } }
+  @keyframes flash { 0% { opacity: 1 } 100% { opacity: 0 } }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+  @keyframes fade-out { 0% { opacity: 0.8 } 100% { opacity: 0 } }
+}
