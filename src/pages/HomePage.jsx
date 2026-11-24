@@ -5,6 +5,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import Button from "../components/Button";
 import Medallion from "../components/Medallion";
 import TopFlourish from "../components/TopFlourish";
+import RedBackdrop from "../components/RedBackdrop";
 import OpenBook from "../components/OpenBook";
 import BookCard from "../components/BookCard";
 import ContractOfTheDay from "../components/ContractOfTheDay";
@@ -59,10 +60,7 @@ export default function HomePage() {
       {burning && <BurnReveal onDone={revealDone} />}
 
       {/* deep red backdrop behind the whole page, with a faint diamond lattice */}
-      <div aria-hidden="true" className="fixed inset-x-0 top-0 -bottom-[20vh] -z-10 bg-velvet-dark">
-        <div className="absolute inset-0 bg-radial-[at_50%_0%] from-blood/70 via-velvet-dark to-velvet-dark" />
-        <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,rgb(201_162_74/0.04)_0_1px,transparent_1px_28px),repeating-linear-gradient(-45deg,rgb(201_162_74/0.04)_0_1px,transparent_1px_28px)]" />
-      </div>
+      <RedBackdrop className="fixed inset-x-0 top-0 -bottom-[20vh]" />
 
       <div>
       <TopFlourish />

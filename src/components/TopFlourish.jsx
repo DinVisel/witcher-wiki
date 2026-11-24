@@ -16,10 +16,11 @@ function Scroll() {
  * Ornamental band under the navbar: layered red curves swooping down to a
  * point in the middle, a gold line along the front curve and a filigree with
  * the wolf medallion. Full-bleed (escapes the page's max width).
+ * `medallion={false}` leaves just the filigree; `className` adjusts spacing/motion.
  */
-export default function TopFlourish() {
+export default function TopFlourish({ medallion = true, className = "-mt-8" }) {
   return (
-    <div aria-hidden="true" className="relative left-1/2 -mt-8 w-screen -translate-x-1/2">
+    <div aria-hidden="true" className={`relative left-1/2 w-screen -translate-x-1/2 ${className}`}>
       <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className="block h-28 w-full sm:h-40">
         <path
           className="fill-[#1a0204]"
@@ -57,7 +58,9 @@ export default function TopFlourish() {
           </g>
           <path d="M320 4 L330 30 L320 56 L310 30 Z" className="fill-velvet-dark stroke-gold" strokeWidth="1.5" />
         </svg>
-        <Medallion className="absolute left-1/2 top-1/2 size-12 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_4px_8px_rgb(0_0_0/0.6)] sm:size-16" />
+        {medallion && (
+          <Medallion className="absolute left-1/2 top-1/2 size-12 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_4px_8px_rgb(0_0_0/0.6)] sm:size-16" />
+        )}
       </div>
     </div>
   );

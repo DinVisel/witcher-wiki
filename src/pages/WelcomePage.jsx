@@ -4,7 +4,8 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSound } from "../hooks/useSound";
 import { useTimeout } from "../hooks/useTimeout";
-import Curtains from "../components/Curtains";
+import RedBackdrop from "../components/RedBackdrop";
+import TopFlourish from "../components/TopFlourish";
 import FireCanvas from "../components/effects/FireCanvas";
 import Medallion from "../components/Medallion";
 import MuteButton from "../components/MuteButton";
@@ -13,8 +14,9 @@ import MuteButton from "../components/MuteButton";
 const WELCOME_SOUND = "welcome.wav";
 
 /**
- * The opening scene: red stage curtains, a wall of fire and a burning title.
- * "Enter" plays the fanfare, opens the curtains and the home page burns into view.
+ * The opening scene: deep red backdrop with the curved ornament band, a wall of
+ * fire and a burning title. "Enter" plays the fanfare, lifts the band away and
+ * the home page burns into view.
  */
 export default function WelcomePage() {
   useDocumentTitle(null);
@@ -34,16 +36,22 @@ export default function WelcomePage() {
 
   return (
     <div className="relative isolate min-h-dvh overflow-hidden bg-velvet-dark">
-      <div aria-hidden="true" className="absolute inset-0 bg-radial-[at_50%_65%] from-blood/60 via-velvet-dark to-ink" />
+      <RedBackdrop />
       <FireCanvas flare={entering} />
-      <Curtains open={entering} width="w-[14%] sm:w-[22%]" />
+
+      {/* the same curved band as the home page; lifts away on Enter */}
+      <div
+        className={`absolute inset-x-0 top-0 z-10 transition-transform duration-1000 ease-in ${entering ? "-translate-y-full" : ""}`}
+      >
+        <TopFlourish medallion={false} className="" />
+      </div>
 
       <div className="absolute right-3 top-3 z-20 sm:right-5 sm:top-5">
         <MuteButton className="bg-ink/50 text-parchment" />
       </div>
 
       <main
-        className={`relative z-10 flex min-h-dvh flex-col items-center justify-center px-12 py-24 text-center transition duration-1000 sm:px-6 ${
+        className={`relative z-10 flex min-h-dvh flex-col items-center justify-center px-6 pb-24 pt-32 text-center transition duration-1000 sm:pt-40 ${
           entering ? "scale-110 opacity-0 blur-sm" : ""
         }`}
       >

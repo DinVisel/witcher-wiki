@@ -6,7 +6,7 @@ const DURATION = 1800; // ms
 const CELL = 4; // CSS pixels per simulated cell; the canvas is scaled up smoothly
 const EDGE = 0.07; // width of the glowing burn front
 const CHAR = 0.05; // width of the scorched band ahead of it
-const SHEET = [26, 4, 6]; // same dark crimson as the welcome page
+const SHEET = [42, 3, 6]; // velvet-dark, the same red as the welcome page
 
 /**
  * Burn "field": every cell gets a value; it burns when the threshold passes it.
