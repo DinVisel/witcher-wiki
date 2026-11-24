@@ -10,17 +10,19 @@ A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations an
 ## Features
 
 **Required**
-- Home page with an intro to the Witcher world and links to every section.
+- Home page (`/home`) with an intro to the Witcher world and links to every section.
 - Listing pages: **Characters**, **Bestiary**, **Signs** and **Locations**, each with **Load more** (MediaWiki continuation tokens).
 - Detail page for every item via dynamic routes (`/monsters/:title`, `/characters/:title`, …).
-- Live **name filter** on every listing, **monster class filter** (`?class=Necrophages`) and **book filter** for characters (`?book=Blood of Elves`) kept in the URL.
+- Live **name filter** on every listing, **monster class filter** (`?class=Necrophages`), **book filter** for characters (`?book=Blood of Elves`) and **location type** (`?type=Islands`), all kept in the URL.
 - **Global search** across the whole wiki (`/search?q=griffin`, debounced).
 - Loading indicator, readable errors and a **Retry** button on every data view.
 - Navbar (with mobile menu) + footer, one consistent dark theme, responsive from 375 px up.
 
 **Extras**
+- **Welcome scene** (`/`): red theatre curtains, a canvas wall of fire with drifting embers and a flickering burning title. "Enter" plays a fanfare, opens the curtains and the home page **burns into view** (a noise-based dissolve on `<canvas>`).
+- **Book-themed home**: the intro is written in an open leather-bound book, the sections are tomes on a shelf, and the contract of the day is a notice pinned with a wax seal.
 - **Cast the signs**: Igni (canvas fire particles + flash), Aard (shockwave rings + card shake), Quen (shield bubble, cast again to dismiss), Yrden (spinning rune trap), Axii (hypnotic rings + blur).
-- **Sound effects** for every sign, with a global mute toggle remembered in `localStorage`.
+- **Sound effects** for every sign and the welcome fanfare, with a global mute toggle remembered in `localStorage`.
 - **Keyboard shortcuts** 1–5 cast the signs on the Signs page.
 - **Storyline** timeline from the Conjunction of the Spheres to the Wild Hunt; summaries and images come from the wiki, chapters fade in on scroll.
 - Themed pages: parchment **Bestiary** with "Weak to" chips on monster pages, glowing rune panel for **Signs**.
@@ -39,8 +41,33 @@ npm install
 npm run dev      # http://localhost:5173
 npm run build    # production build in dist/
 npm run lint     # oxlint
-npm run sounds   # regenerate the sign sound effects (optional)
+npm run sounds   # regenerate the sign and welcome sounds (optional)
 ```
+
+## Testing
+
+Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop and 375 px phone width). `npm run lint` reports 0 warnings and `npm run build` succeeds.
+
+| Area | What was checked | Result |
+|---|---|---|
+| Welcome → Home | Enter plays the fanfare, curtains open, home burns into view; sound keeps playing after the route change and ends with the burn; refresh on `/home` does not replay it | ✅ |
+| Navigation | Every navbar link incl. Home, active link highlight, mobile menu opens and closes after navigating, logo → Home | ✅ |
+| Listings | Bestiary "Load more" appends (21 → 45), button hides at the end of a list (Necrophages, 21 items) | ✅ |
+| Search & filters | Name filter reacts while typing ("grif" → Archgriffin); class / book / location chips reset the list and survive refresh (`?class=Necrophages`); global search keeps `?q=` in the URL and skips disambiguation pages | ✅ |
+| Detail pages | Monster (image, infobox, "Weak to" chips, sections), sign (casting area), search result via `/wiki/:title` | ✅ |
+| Not found | `/monsters/NotARealMonster` shows a friendly message; `/abc` shows the 404 page | ✅ |
+| Errors | Simulated offline: readable error + Retry; Retry recovers once online | ✅ |
+| Sign effects | Keys 1–5 and Cast buttons for all five signs; Quen toggles off; Igni's canvas is removed after the effect | ✅ |
+| Deploy | Direct load + refresh of deep links (`/monsters/Drowner`), sounds and favicon served by Vercel; no console errors | ✅ |
+| Responsive | 375 px: no horizontal scroll on Welcome, Home, Characters | ✅ |
+| Accessibility | `prefers-reduced-motion`: static fire glow, fade instead of burn; aria labels on cast/mute/menu buttons; skip link | ✅ |
+| Data quality | Checked image/summary coverage per category against the live API; cards with images are shown first, and Locations uses the best-covered categories | ✅ |
+
+**Bugs found and fixed while testing**
+- In current Chromium `window.scrollTo()` returns a Promise; returning it from a `useEffect` crashed React ("destroy is not a function"). Fixed by not returning it.
+- The plan's `prop=extracts` doesn't exist on Fandom; summaries come from `pageprops.fandomdescription` instead.
+- `Category:Bestiary` and `Category:Characters` are empty on the wiki; switched to `The Witcher 3 bestiary` and per-book character categories.
+- The original Locations category had images for only 6 of 24 items; replaced with better-covered categories and filter chips.
 
 ## Project structure
 
@@ -73,7 +100,7 @@ scripts/generate-sounds.mjs   synthesises the five sign sounds into public/sound
 ## Credits
 
 - Text and images: [Witcher Wiki](https://witcher.fandom.com/) contributors, **CC BY-SA**.
-- Sounds: synthesised for this project by `scripts/generate-sounds.mjs` (original, no third-party audio).
+- Sounds (signs + welcome fanfare): synthesised for this project by `scripts/generate-sounds.mjs` (original, no third-party audio).
 - Fonts: Cinzel and Inter from Google Fonts (SIL Open Font License).
 
 Fan project, not affiliated with CD PROJEKT RED or Netflix.
