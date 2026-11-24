@@ -15,12 +15,12 @@ function Scroll() {
 /**
  * Ornamental band under the navbar: layered red curves swooping down to a
  * point in the middle, a gold line along the front curve and a filigree with
- * the wolf medallion. Full-bleed (escapes the page's max width).
- * `medallion={false}` leaves just the filigree; `className` adjusts spacing/motion.
+ * the wolf medallion. Fills the width of its parent, so place it outside the
+ * page's max-width container. `medallion={false}` leaves just the filigree.
  */
-export default function TopFlourish({ medallion = true, className = "-mt-8" }) {
+export default function TopFlourish({ medallion = true, className = "" }) {
   return (
-    <div aria-hidden="true" className={`relative left-1/2 w-screen -translate-x-1/2 ${className}`}>
+    <div aria-hidden="true" className={`relative w-full ${className}`}>
       <svg viewBox="0 0 1440 180" preserveAspectRatio="none" className="block h-28 w-full sm:h-40">
         <path
           className="fill-[#1a0204]"

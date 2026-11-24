@@ -4,7 +4,6 @@ import { NAV_SECTIONS } from "../config/sections";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import Button from "../components/Button";
 import Medallion from "../components/Medallion";
-import TopFlourish from "../components/TopFlourish";
 import OpenBook from "../components/OpenBook";
 import BookCard from "../components/BookCard";
 import ContractOfTheDay from "../components/ContractOfTheDay";
@@ -35,9 +34,9 @@ function Ornament({ className = "" }) {
 }
 
 /**
- * Home: a deep red backdrop with an ornamental band of curves at the top, the
- * intro written in an open book, the sections as leather tomes and the
- * contract of the day pinned below.
+ * Home: the intro written in an open book, the sections as leather tomes and
+ * the contract of the day pinned below. (The ornamental band above it is
+ * rendered full-width by Layout.)
  * Arriving from the welcome page, the page burns into view (BurnReveal).
  */
 export default function HomePage() {
@@ -58,10 +57,7 @@ export default function HomePage() {
     <div className="space-y-20">
       {burning && <BurnReveal onDone={revealDone} />}
 
-      <div>
-      <TopFlourish />
-
-      <section className="relative mt-2 px-1 pb-6 sm:px-6">
+      <section className="relative px-1 pb-6 sm:px-6">
         {/* warm light falling on the book */}
         <div aria-hidden="true" className="absolute inset-0 bg-radial-[at_50%_30%] from-quen/15 via-transparent to-transparent" />
 
@@ -100,7 +96,6 @@ export default function HomePage() {
           }
         />
       </section>
-      </div>
 
       <section aria-labelledby="library-heading">
         <div className="mb-10 text-center">

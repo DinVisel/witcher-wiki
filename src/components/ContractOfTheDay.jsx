@@ -39,7 +39,7 @@ export default function ContractOfTheDay() {
       {/* wax seal */}
       <span
         aria-hidden="true"
-        className="absolute -bottom-4 -right-3 grid size-14 rotate-12 place-items-center rounded-full bg-radial-[at_35%_30%] from-[#c0262c] to-[#5a0a0e] font-display text-xl font-black text-[#3a0507] shadow-[0_3px_6px_rgb(0_0_0/0.5)]"
+        className="absolute -bottom-4 right-1 grid size-14 sm:-right-3 rotate-12 place-items-center rounded-full bg-radial-[at_35%_30%] from-[#c0262c] to-[#5a0a0e] font-display text-xl font-black text-[#3a0507] shadow-[0_3px_6px_rgb(0_0_0/0.5)]"
       >
         W
       </span>

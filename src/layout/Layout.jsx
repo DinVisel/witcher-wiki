@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import RedBackdrop from "../components/RedBackdrop";
+import TopFlourish from "../components/TopFlourish";
 
 /**
  * Shared page frame: red backdrop, navbar, the current route, footer.
@@ -10,6 +11,7 @@ import RedBackdrop from "../components/RedBackdrop";
  */
 export default function Layout() {
   const { pathname } = useLocation();
+  const isHome = pathname === "/home";
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
@@ -25,6 +27,8 @@ export default function Layout() {
         Skip to content
       </a>
       <Navbar />
+      {/* the home page gets the ornamental band, full width under the navbar */}
+      {isHome && <TopFlourish />}
       <main id="main" className="mx-auto w-full max-w-7xl flex-1 px-4 py-8">
         <Outlet />
       </main>
