@@ -57,7 +57,6 @@ src/
 ├── App.jsx              routes
 └── index.css            Tailwind import + @theme (colours, fonts, keyframes)
 scripts/generate-sounds.mjs   synthesises the five sign sounds into public/sounds
-docs/                    implementation plan + per-phase progress notes
 ```
 
 ## Data source
