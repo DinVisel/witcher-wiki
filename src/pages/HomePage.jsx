@@ -5,7 +5,6 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import Button from "../components/Button";
 import Medallion from "../components/Medallion";
 import TopFlourish from "../components/TopFlourish";
-import RedBackdrop from "../components/RedBackdrop";
 import OpenBook from "../components/OpenBook";
 import BookCard from "../components/BookCard";
 import ContractOfTheDay from "../components/ContractOfTheDay";
@@ -58,9 +57,6 @@ export default function HomePage() {
   return (
     <div className="space-y-20">
       {burning && <BurnReveal onDone={revealDone} />}
-
-      {/* deep red backdrop behind the whole page, with a faint diamond lattice */}
-      <RedBackdrop className="fixed inset-x-0 top-0 -bottom-[20vh]" />
 
       <div>
       <TopFlourish />

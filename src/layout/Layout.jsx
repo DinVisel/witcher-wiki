@@ -2,8 +2,12 @@ import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import RedBackdrop from "../components/RedBackdrop";
 
-/** Shared page frame: navbar, the current route, footer. Scrolls to top on navigation. */
+/**
+ * Shared page frame: red backdrop, navbar, the current route, footer.
+ * Scrolls to top on navigation.
+ */
 export default function Layout() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -11,7 +15,9 @@ export default function Layout() {
   }, [pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col overflow-x-clip">
+    <div className="flex min-h-screen flex-col">
+      {/* same background as the welcome scene; extends past the bottom edge */}
+      <RedBackdrop className="fixed inset-x-0 top-0 -bottom-[20vh]" />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-gold focus:px-3 focus:py-2 focus:text-ink"
