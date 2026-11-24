@@ -25,14 +25,14 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 border-b border-blood/30 bg-ink/90 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3" aria-label="Main">
-        <Link to="/home" className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3" title="Back to the welcome page">
           <Medallion className="size-9" />
           <span className="font-display text-lg font-bold tracking-widest text-silver">
             Witcher<span className="text-gold">Wiki</span>
           </span>
         </Link>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {LINKS.map((l) => (
             <NavLink key={l.path} to={l.path} className={linkClass}>
               {l.label}
@@ -41,7 +41,7 @@ export default function Navbar() {
           {muteButton}
         </div>
 
-        <div className="flex items-center gap-1 md:hidden">
+        <div className="flex items-center gap-1 lg:hidden">
           {muteButton}
           <button
             type="button"
@@ -59,7 +59,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div id="mobile-menu" className="flex flex-col gap-1 border-t border-steel/20 px-4 py-3 md:hidden">
+        <div id="mobile-menu" className="flex flex-col gap-1 border-t border-steel/20 px-4 py-3 lg:hidden">
           {LINKS.map((l) => (
             <NavLink key={l.path} to={l.path} className={linkClass} onClick={() => setOpen(false)}>
               {l.label}
