@@ -2,8 +2,16 @@ import { Link } from "react-router-dom";
 import { itemPath, WIKI_SECTION } from "../config/sections";
 import { useInView } from "../hooks/useInView";
 import WikiImage from "./WikiImage";
+import OpenBook from "./OpenBook";
 
-/** One timeline chapter. Fades in when scrolled into view; alternates sides on md+. */
+/** Chapter numbers as Roman numerals (1–39 is plenty for the storyline). */
+function toRoman(n) {
+  const tens = ["", "X", "XX", "XXX"];
+  const ones = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
+  return tens[Math.floor(n / 10)] + ones[n % 10];
+}
+
+/** One timeline chapter drawn as an open book. Fades in when scrolled into view; alternates sides on md+. */
 export default function StoryChapter({ chapter, preview, index }) {
   const [ref, inView] = useInView();
   const right = index % 2 === 1;
@@ -23,22 +31,39 @@ export default function StoryChapter({ chapter, preview, index }) {
           right ? "md:-left-2" : "md:right-[-8px] md:left-auto"
         }`}
       />
-      <div className="overflow-hidden rounded-lg border border-steel/20 bg-ash">
-        <div className="flex flex-col sm:flex-row">
-          <WikiImage src={preview?.image} alt="" className="h-48 w-full shrink-0 sm:h-auto sm:w-40" />
-          <div className="flex flex-col gap-2 p-5">
-            <p className="font-display text-xs uppercase tracking-[0.25em] text-blood">
-              {String(index + 1).padStart(2, "0")} · {chapter.era}
-            </p>
-            <h2 className="font-display text-2xl font-semibold text-gold">{title}</h2>
-            <p className="italic text-silver">{chapter.hook}</p>
-            {preview?.summary && <p className="line-clamp-4 text-sm text-steel">{preview.summary}</p>}
-            <Link to={itemPath(WIKI_SECTION, title)} className="mt-1 text-sm text-gold hover:underline">
+      {/* each chapter is an open book: an illustrated plate on the left, the text on the right */}
+      <OpenBook
+        compact
+        split="lg"
+        left={
+          <figure className="flex h-full flex-col items-center gap-2">
+            <div className="w-full rounded-sm border border-[#8a6f45]/60 p-1 shadow-[inset_0_0_12px_rgb(60_30_10/0.35)]">
+              <WikiImage src={preview?.image} alt="" className="h-44 w-full rounded-[2px] sepia-[.2] md:h-52" />
+            </div>
+            <figcaption className="font-display text-[10px] uppercase tracking-[0.3em] text-ink/60">
+              Chapter {toRoman(index + 1)}
+            </figcaption>
+          </figure>
+        }
+        right={
+          <div className="flex h-full flex-col gap-2">
+            <p className="font-display text-[10px] uppercase tracking-[0.25em] text-blood/80">{chapter.era}</p>
+            <h2 className="font-display text-xl font-bold leading-tight text-blood">{title}</h2>
+            <p className="font-display text-sm italic text-ink/80">{chapter.hook}</p>
+            {preview?.summary && (
+              <p className="line-clamp-4 text-sm leading-relaxed text-ink/75 first-letter:font-display first-letter:text-2xl first-letter:font-bold first-letter:text-blood">
+                {preview.summary}
+              </p>
+            )}
+            <Link
+              to={itemPath(WIKI_SECTION, title)}
+              className="mt-auto self-start pt-1 font-display text-sm font-semibold text-blood underline-offset-4 hover:underline"
+            >
               Read more →
             </Link>
           </div>
-        </div>
-      </div>
+        }
+      />
     </li>
   );
 }
