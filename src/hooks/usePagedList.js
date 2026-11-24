@@ -1,11 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getCategoryPage, getPreviews } from "../services/api";
 
-/** Fetch one chunk of a category: its titles, then their previews. */
+/** Rough "how complete is this card" score: image counts most, then summary. */
+const richness = (item) => (item.image ? 2 : 0) + (item.summary ? 1 : 0);
+
+/**
+ * Fetch one chunk of a category: its titles, then their previews.
+ * Within each chunk, cards with images and summaries come first (stable sort,
+ * so the wiki's alphabetical order is kept inside each group).
+ */
 async function fetchChunk(category, cont, signal) {
   const { titles, next } = await getCategoryPage(category, cont, { signal });
   const items = await getPreviews(titles, { signal });
-  return { items, next };
+  return { items: items.toSorted((a, b) => richness(b) - richness(a)), next };
 }
 
 const EMPTY = { key: null, items: [], next: null, loadingMore: false, error: null };

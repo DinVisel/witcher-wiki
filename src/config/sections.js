@@ -30,9 +30,9 @@ export const SECTIONS = {
     key: "locations",
     label: "Locations",
     path: "/locations",
-    category: "Category:Locations",
+    category: "Category:The Witcher 3 locations",
     variant: "steel",
-    description: "Castles, mines, markets and ruins of the Continent.",
+    description: "Kingdoms, islands, fortresses and ruins of the Continent.",
   },
 };
 
@@ -74,6 +74,15 @@ export const CHARACTER_BOOKS = [
   { label: "Tower of the Swallow", value: "The Tower of the Swallow", category: "Category:The Tower of the Swallow characters" },
   { label: "Lady of the Lake", value: "The Lady of the Lake", category: "Category:The Lady of the Lake characters" },
   { label: "Season of Storms", value: "Season of Storms", category: "Category:Season of Storms characters" },
+];
+
+/** Location filters (?type=). Picked for good image/summary coverage on the wiki. */
+export const LOCATION_TYPES = [
+  { label: "Witcher 3 world", value: "", category: SECTIONS.locations.category },
+  { label: "Kingdoms", value: "Kingdoms", category: "Category:Kingdoms" },
+  { label: "Islands", value: "Islands", category: "Category:Islands" },
+  { label: "Fortresses", value: "Fortresses", category: "Category:Fortresses" },
+  { label: "Regions", value: "Regions", category: "Category:Regions" },
 ];
 
 /** Build the link to an item's detail page. */
