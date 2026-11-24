@@ -5,6 +5,7 @@ import { useSignCasting } from "../hooks/useSignCasting";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import ListingView from "../components/ListingView";
 import SignCard from "../components/SignCard";
+import InfoButton from "../components/InfoButton";
 
 /** Keys 1–5 cast the signs. Ignored while typing in an input. */
 function useSignShortcuts(cast) {
@@ -36,7 +37,21 @@ export default function SignsPage() {
         className="relative"
         section={SECTIONS.signs}
         filters={
-          <p className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-steel">
+          <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-steel">
+            <InfoButton label="Which signs can be cast?" title="Which signs can be cast?">
+              <p>
+                Only the five signs witchers use in the games can be cast here:{" "}
+                {SIGNS.map((s, i) => (
+                  <span key={s.name}>
+                    <span className={s.text}>{s.name}</span>
+                    {i < SIGNS.length - 2 ? ", " : i === SIGNS.length - 2 ? " and " : "."}
+                  </span>
+                ))}
+              </p>
+              <p className="mt-2 text-steel">
+                The other signs on this page come from the wider lore of the Witcher Wiki, so they have no Cast button.
+              </p>
+            </InfoButton>
             <span>Shortcuts:</span>
             {SIGNS.map((s) => (
               <span key={s.name} className="flex items-center gap-1.5">
@@ -44,7 +59,7 @@ export default function SignsPage() {
                 {s.name}
               </span>
             ))}
-          </p>
+          </div>
         }
         renderItem={(item) => <SignCard item={item} casting={casting} onCast={cast} onDone={finish} />}
       />
