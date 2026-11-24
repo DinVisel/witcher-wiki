@@ -19,7 +19,7 @@ A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations an
 - Navbar (with mobile menu) + footer, one consistent dark theme, responsive from 375 px up.
 
 **Extras**
-- **Welcome scene** (`/`): red theatre curtains, a canvas wall of fire with drifting embers and a flickering burning title. "Enter" plays a fanfare, opens the curtains and the home page **burns into view** (a noise-based dissolve on `<canvas>`).
+- **Welcome scene** (`/`): deep red backdrop with a curved red-and-gold ornament band, a canvas wall of fire with drifting embers and a flickering burning title. "Enter" plays a fanfare, lifts the band away and the home page **burns into view** (a noise-based dissolve on `<canvas>`). The same red backdrop is used on every page.
 - **Book-themed home**: the intro is written in an open leather-bound book, the sections are tomes on a shelf, and the contract of the day is a notice pinned with a wax seal.
 - **Cast the signs**: Igni (canvas fire particles + flash), Aard (shockwave rings + card shake), Quen (shield bubble, cast again to dismiss), Yrden (spinning rune trap), Axii (hypnotic rings + blur).
 - **Sound effects** for every sign and the welcome fanfare, with a global mute toggle remembered in `localStorage`.
@@ -50,7 +50,7 @@ Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop a
 
 | Area | What was checked | Result |
 |---|---|---|
-| Welcome → Home | Enter plays the fanfare, curtains open, home burns into view; sound keeps playing after the route change and ends with the burn; refresh on `/home` does not replay it | ✅ |
+| Welcome → Home | Enter plays the fanfare, the ornament band lifts away, home burns into view; sound keeps playing after the route change and ends with the burn; refresh on `/home` does not replay it | ✅ |
 | Navigation | Every navbar link incl. Home, active link highlight, mobile menu opens and closes after navigating, logo → Home | ✅ |
 | Listings | Bestiary "Load more" appends (21 → 45), button hides at the end of a list (Necrophages, 21 items) | ✅ |
 | Search & filters | Name filter reacts while typing ("grif" → Archgriffin); class / book / location chips reset the list and survive refresh (`?class=Necrophages`); global search keeps `?q=` in the URL and skips disambiguation pages | ✅ |
@@ -64,6 +64,7 @@ Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop a
 | Data quality | Checked image/summary coverage per category against the live API; cards with images are shown first, and Locations uses the best-covered categories | ✅ |
 
 **Bugs found and fixed while testing**
+- Two wiki titles that redirect to the same page produced duplicate cards and a React "same key" warning; previews are now de-duplicated after following redirects.
 - In current Chromium `window.scrollTo()` returns a Promise; returning it from a `useEffect` crashed React ("destroy is not a function"). Fixed by not returning it.
 - The plan's `prop=extracts` doesn't exist on Fandom; summaries come from `pageprops.fandomdescription` instead.
 - `Category:Bestiary` and `Category:Characters` are empty on the wiki; switched to `The Witcher 3 bestiary` and per-book character categories.
