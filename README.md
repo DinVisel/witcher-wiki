@@ -24,7 +24,7 @@ A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations an
 - **Cast the signs**: Igni (canvas fire particles + flash), Aard (shockwave rings + card shake), Quen (shield bubble, cast again to dismiss), Yrden (spinning rune trap), Axii (hypnotic rings + blur).
 - **Sound effects** for every sign and the welcome fanfare, with a global mute toggle remembered in `localStorage`.
 - **Keyboard shortcuts** 1–5 cast the signs on the Signs page.
-- **Storyline** timeline from the Conjunction of the Spheres to the Wild Hunt; summaries and images come from the wiki, chapters fade in on scroll.
+- **Storyline** timeline from the Conjunction of the Spheres to the Wild Hunt, each chapter drawn as an open book (illustration plate + text page); summaries and images come from the wiki, chapters fade in on scroll.
 - Themed pages: parchment **Bestiary** with "Weak to" chips on monster pages, glowing rune panel for **Signs**.
 - **Contract of the day** on the home page (same monster for everyone all day).
 - Swinging wolf-medallion loader and a custom 404 ("You've strayed from the Path").
@@ -51,7 +51,7 @@ Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop a
 | Area | What was checked | Result |
 |---|---|---|
 | Welcome → Home | Enter plays the fanfare, the ornament band lifts away, home burns into view; sound keeps playing after the route change and ends with the burn; refresh on `/home` does not replay it | ✅ |
-| Navigation | Every navbar link incl. Home, active link highlight, mobile menu opens and closes after navigating, logo → Home | ✅ |
+| Navigation | Every navbar link incl. Home, active link highlight, mobile menu (below 1024 px) opens and closes after navigating, logo → welcome page | ✅ |
 | Listings | Bestiary "Load more" appends (21 → 45), button hides at the end of a list (Necrophages, 21 items) | ✅ |
 | Search & filters | Name filter reacts while typing ("grif" → Archgriffin); class / book / location chips reset the list and survive refresh (`?class=Necrophages`); global search keeps `?q=` in the URL and skips disambiguation pages | ✅ |
 | Detail pages | Monster (image, infobox, "Weak to" chips, sections), sign (casting area), search result via `/wiki/:title` | ✅ |
