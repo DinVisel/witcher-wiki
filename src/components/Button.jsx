@@ -4,6 +4,7 @@ const VARIANTS = {
   primary: "bg-blood text-silver hover:bg-blood/80 border-blood",
   ghost: "bg-transparent text-silver hover:bg-silver/10 border-steel/40",
   gold: "bg-gold text-ink hover:bg-gold/85 border-gold",
+  ink: "bg-transparent text-ink hover:bg-ink/10 border-ink/40", // for parchment backgrounds
 };
 
 /** The one button style of the site. Renders a <Link> when `to` is given. */

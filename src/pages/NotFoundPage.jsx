@@ -14,7 +14,7 @@ export default function NotFoundPage() {
         Even witchers get lost in the mist sometimes. This road leads nowhere — turn back before the drowners notice.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
-        <Button to="/">Return to the Continent</Button>
+        <Button to="/home">Return to the Continent</Button>
         <Button to="/search" variant="ghost">
           Search the wiki
         </Button>

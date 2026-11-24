@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { SoundProvider } from "./context/SoundContext";
 import { SECTIONS, WIKI_SECTION } from "./config/sections";
 import Layout from "./layout/Layout";
+import WelcomePage from "./pages/WelcomePage";
 import HomePage from "./pages/HomePage";
 import StoryPage from "./pages/StoryPage";
 import CharactersPage from "./pages/CharactersPage";
@@ -12,14 +13,18 @@ import DetailPage from "./pages/DetailPage";
 import SearchPage from "./pages/SearchPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
-/** All client-side routes. Every page renders inside the shared Layout. */
+/**
+ * All client-side routes. "/" is the full-screen welcome scene; every other
+ * page renders inside the shared Layout (navbar + footer).
+ */
 export default function App() {
   return (
     <BrowserRouter>
       <SoundProvider>
         <Routes>
+          <Route index element={<WelcomePage />} />
           <Route element={<Layout />}>
-            <Route index element={<HomePage />} />
+            <Route path="home" element={<HomePage />} />
             <Route path="story" element={<StoryPage />} />
             <Route path="characters" element={<CharactersPage />} />
             <Route path="characters/:title" element={<DetailPage section={SECTIONS.characters} />} />

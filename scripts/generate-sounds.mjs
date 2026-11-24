@@ -78,6 +78,31 @@ const SOUNDS = {
     });
     return s;
   }),
+  // Welcome fanfare: drum hits, a rising brass arpeggio and a held major chord.
+  "welcome.wav": (() => {
+    const noise = lowNoise();
+    // Brass-like tone: odd + even harmonics with a soft attack and slight vibrato.
+    const brass = (f, t, start, len) => {
+      if (t < start) return 0;
+      const local = t - start;
+      const e = env(local, 0.06, len, 1.6);
+      const vib = 1 + 0.003 * sin(5.5, local);
+      let s = 0;
+      for (let n = 1; n <= 7; n++) s += sin(f * n * vib, local) / (n * (n % 2 ? 1 : 1.6));
+      return s * e;
+    };
+    const drum = (t, start) => {
+      if (t < start) return 0;
+      const local = t - start;
+      return (sin(70 + 40 * Math.exp(-local * 12), local) * 0.9 + noise(900) * 1.5) * Math.exp(-local * 6);
+    };
+    const D4 = 293.66, Fs4 = 369.99, A4 = 440, D5 = 587.33, A3 = 220;
+    return render(3.0, (t) => {
+      const arpeggio = brass(A3, t, 0, 0.35) + brass(D4, t, 0.18, 0.35) + brass(Fs4, t, 0.36, 0.35) + brass(A4, t, 0.54, 0.4);
+      const chord = brass(D4, t, 0.8, 2.2) + brass(Fs4, t, 0.8, 2.2) * 0.8 + brass(A4, t, 0.8, 2.2) * 0.8 + brass(D5, t, 0.8, 2.2) * 0.6;
+      return arpeggio * 0.35 + chord * 0.25 + drum(t, 0) + drum(t, 0.8) * 1.2;
+    });
+  })(),
 };
 
 /** Encode float samples as a 16-bit PCM WAV buffer (normalised to -1 dBFS). */

@@ -13,6 +13,9 @@
   --color-quen: #ffc94a;
   --color-yrden: #b26bff;
   --color-axii: #4ad6a0;
+  --color-velvet: #8e1218;     /* theatre curtain red */
+  --color-velvet-dark: #2a0306;
+  --color-leather: #4a1410;    /* book covers */
 
   --font-display: "Cinzel", serif;
   --font-body: "Inter", sans-serif;
@@ -25,6 +28,9 @@
   --animate-flash: flash 0.6s ease-out forwards;
   --animate-fade-in: fade-in 0.4s ease-out both;
   --animate-fade-out: fade-out 1s ease-out forwards;
+  --animate-sway: sway 7s ease-in-out infinite;
+  --animate-flicker: flicker 2.4s ease-in-out infinite;
+  --animate-rise-in: rise-in 1.2s ease-out both;
 
   @keyframes shockwave { 0% { transform: scale(0.2); opacity: 0.9 } 100% { transform: scale(3); opacity: 0 } }
   @keyframes shield { 0%,100% { transform: scale(1); opacity: 0.6 } 50% { transform: scale(1.06); opacity: 0.9 } }
@@ -34,4 +40,11 @@
   @keyframes flash { 0% { opacity: 1 } 100% { opacity: 0 } }
   @keyframes fade-in { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
   @keyframes fade-out { 0% { opacity: 0.8 } 100% { opacity: 0 } }
+  @keyframes sway { 0%,100% { transform: skewX(0deg) } 50% { transform: skewX(0.8deg) } }
+  @keyframes flicker {
+    0%,100% { opacity: 1; filter: drop-shadow(0 0 14px rgb(255 106 26 / 0.7)) }
+    35% { opacity: 0.9; filter: drop-shadow(0 0 26px rgb(255 150 40 / 0.95)) }
+    60% { opacity: 0.97; filter: drop-shadow(0 0 9px rgb(255 80 20 / 0.6)) }
+  }
+  @keyframes rise-in { from { opacity: 0; transform: translateY(24px); filter: blur(6px) } to { opacity: 1; transform: none; filter: none } }
 }
