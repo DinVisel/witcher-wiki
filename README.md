@@ -2,8 +2,8 @@
 
 A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations and the story of the Continent — built with React and Tailwind CSS for a web development midterm.
 
-- **Live:** _add your Vercel link here_
-- **Repo:** _add your GitHub link here_
+- **Live:** https://witcher-wiki-eight.vercel.app/
+- **Repo:** https://github.com/DinVisel/witcher-wiki
 
 <!-- Add 1–2 screenshots or a GIF of casting Igni here. -->
 
