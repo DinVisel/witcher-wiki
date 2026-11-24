@@ -78,13 +78,15 @@ export async function getPreviews(titles, { signal } = {}) {
   const renamed = new Map();
   [...(q.normalized ?? []), ...(q.redirects ?? [])].forEach((r) => renamed.set(r.from, r.to));
   const pages = new Map(Object.values(q.pages ?? {}).map((p) => [p.title, p]));
+  const seen = new Set(); // several titles can redirect to the same page
 
   return titles
     .map((requested) => {
       let title = requested;
       for (let i = 0; i < 3 && renamed.has(title); i++) title = renamed.get(title);
       const page = pages.get(title);
-      if (!page || page.missing !== undefined) return null;
+      if (!page || page.missing !== undefined || seen.has(title)) return null;
+      seen.add(title);
       return {
         title,
         image: page.thumbnail?.source ?? null,
