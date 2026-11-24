@@ -4,7 +4,7 @@ import { NAV_SECTIONS } from "../config/sections";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import Button from "../components/Button";
 import Medallion from "../components/Medallion";
-import Curtains from "../components/Curtains";
+import TopFlourish from "../components/TopFlourish";
 import OpenBook from "../components/OpenBook";
 import BookCard from "../components/BookCard";
 import ContractOfTheDay from "../components/ContractOfTheDay";
@@ -35,8 +35,9 @@ function Ornament({ className = "" }) {
 }
 
 /**
- * Home: a stage with red curtains, the intro written in an open book, the
- * sections as leather tomes and the contract of the day pinned below.
+ * Home: a deep red backdrop with an ornamental band of curves at the top, the
+ * intro written in an open book, the sections as leather tomes and the
+ * contract of the day pinned below.
  * Arriving from the welcome page, the page burns into view (BurnReveal).
  */
 export default function HomePage() {
@@ -57,14 +58,18 @@ export default function HomePage() {
     <div className="space-y-20">
       {burning && <BurnReveal onDone={revealDone} />}
 
-      {/* velvet backdrop behind the whole page */}
-      <div aria-hidden="true" className="fixed inset-0 -z-10 bg-radial-[at_50%_0%] from-blood/35 via-velvet-dark/60 to-ink" />
-      <Curtains className="fixed inset-0 -z-10 opacity-60" valance={false} tieBacks={false} width="w-[9%] xl:w-[14%]" />
+      {/* deep red backdrop behind the whole page, with a faint diamond lattice */}
+      <div aria-hidden="true" className="fixed inset-x-0 top-0 -bottom-[20vh] -z-10 bg-velvet-dark">
+        <div className="absolute inset-0 bg-radial-[at_50%_0%] from-blood/70 via-velvet-dark to-velvet-dark" />
+        <div className="absolute inset-0 bg-[repeating-linear-gradient(45deg,rgb(201_162_74/0.04)_0_1px,transparent_1px_28px),repeating-linear-gradient(-45deg,rgb(201_162_74/0.04)_0_1px,transparent_1px_28px)]" />
+      </div>
 
-      <section className="relative overflow-hidden rounded-xl border border-blood/40 bg-velvet-dark px-3 pb-14 pt-28 shadow-[inset_0_0_80px_rgb(0_0_0/0.8)] sm:px-10 sm:pt-32">
-        <Curtains sway={false} width="w-[7%] sm:w-[10%]" />
-        {/* stage spotlight */}
-        <div aria-hidden="true" className="absolute inset-0 bg-radial-[at_50%_15%] from-quen/20 via-transparent to-transparent" />
+      <div>
+      <TopFlourish />
+
+      <section className="relative mt-2 px-1 pb-6 sm:px-6">
+        {/* warm light falling on the book */}
+        <div aria-hidden="true" className="absolute inset-0 bg-radial-[at_50%_30%] from-quen/15 via-transparent to-transparent" />
 
         <OpenBook
           className="motion-safe:animate-rise-in"
@@ -101,6 +106,7 @@ export default function HomePage() {
           }
         />
       </section>
+      </div>
 
       <section aria-labelledby="library-heading">
         <div className="mb-10 text-center">
