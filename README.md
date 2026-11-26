@@ -25,7 +25,13 @@ A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations an
 - **Sound effects** for every sign and the welcome fanfare, with a global mute toggle remembered in `localStorage`.
 - **Keyboard shortcuts** 1–5 cast the signs on the Signs page.
 - **Storyline** timeline from the Conjunction of the Spheres to the Wild Hunt, each chapter drawn as an open book (illustration plate + text page); summaries and images come from the wiki, chapters fade in on scroll.
-- **Ride with Roach**: on the Story page, press "Jump on Roach" — Geralt (an original SVG mascot) leaps into the saddle with a hoof clip-clop, and Roach then rides down the timeline as you scroll (CSS `position: sticky`, no JS positioning), galloping while the page moves; the chapter she passes lights up.
+- **Ride with Roach**: on the Story page a winding dirt road (SVG, with trees, grass and a milestone per chapter) runs past the books. Press "Jump on Roach" — Geralt (an original SVG mascot) leaps into the saddle with a hoof clip-clop, and Roach follows the road's curves as you scroll, turning to face the way the road bends and galloping while the page moves. The chapter she passes lights up, and the road ends at a campfire.
+- **Fan extras** (all tracked in a **Witcher's Journal** at `/journal`, saved in `localStorage`, with "Journal updated" toasts):
+  - *Trial of the Signs* — a memory puzzle on the Signs page: repeat growing sequences of signs (with their sounds) for 5 rounds.
+  - *Prepare for the contract* — a Bestiary quiz built live from the API: name a random monster's class out of four.
+  - *Witcher Senses* — the eye icon in the navbar turns the screen red and reveals hidden claw-mark clues on five pages.
+  - *Travellers on the road* — a pedlar, a stray dog and a drowner in a puddle, each with a line when clicked.
+  - Easter eggs: Roach on a rooftop (Locations), a humming medallion (welcome page), and typing a certain card game's name anywhere.
 - Themed pages: parchment **Bestiary** with "Weak to" chips on monster pages, glowing rune panel for **Signs**.
 - **Contract of the day** on the home page (same monster for everyone all day).
 - Swinging wolf-medallion loader and a custom 404 ("You've strayed from the Path").
@@ -61,7 +67,8 @@ Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop a
 | Sign effects | Keys 1–5 and Cast buttons for all five signs; Quen toggles off; Igni's canvas is removed after the effect | ✅ |
 | Deploy | Direct load + refresh of deep links (`/monsters/Drowner`), sounds and favicon served by Vercel; no console errors | ✅ |
 | Responsive | 375 px: no horizontal scroll on Welcome, Home, Characters | ✅ |
-| Roach ride | "Jump on Roach" plays the hoof sound and switches to Dismount; Roach stays level on screen while the timeline scrolls; the chapter level with her glows (checked at several scroll positions); fits at 375 px | ✅ |
+| Roach ride | "Jump on Roach" plays the hoof sound and switches to Dismount; Roach follows the curved road (x changes with the bends, she faces left/right with the road) while staying level on screen; the chapter level with her glows; at the bottom of the page she reaches the campfire at the road's end; fits at 375 px | ✅ |
+| Fan extras | Trial of the Signs played through all 5 rounds; quiz questions load from the API with images and the streak counts/reset; Witcher Senses reveals clues and counts them; travellers show their lines; each easter egg unlocks its Journal entry with a toast and survives a reload | ✅ |
 | Accessibility | `prefers-reduced-motion`: static fire glow, fade instead of burn; aria labels on cast/mute/menu buttons; skip link | ✅ |
 | Data quality | Checked image/summary coverage per category against the live API; cards with images are shown first, and Locations uses the best-covered categories | ✅ |
 
@@ -77,13 +84,14 @@ Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop a
 ```
 src/
 ├── services/api.js      every API call + response parsing
-├── hooks/               useFetch, usePagedList, useDebounce, useSound, useSignCasting, useFilterParam, useInView, …
-├── context/             SoundContext (global mute)
+├── hooks/               useFetch, usePagedList, useDebounce, useSound, useSignCasting, useFilterParam, useInView, useJournal, …
+├── context/             SoundContext (global mute), JournalContext (fan extras progress), SensesContext (Witcher Senses)
 ├── layout/              Layout, Navbar, Footer
 ├── components/          ItemCard, ItemGrid, ListingView, SearchBar, FilterChips, Loader, ErrorMessage, …
 │   └── effects/         SignEffect + Igni/Aard/Quen/Yrden/Axii effects
 ├── pages/               Home, Story, Characters, Monsters, Signs, Locations, Detail, Search, NotFound
-├── config/              sections, signs, storyline (small config only — content comes from the API)
+├── config/              sections, signs, storyline, achievements (small config only — content comes from the API)
+├── utils/road.js        geometry of the winding Story road (pure math)
 ├── App.jsx              routes
 └── index.css            Tailwind import + @theme (colours, fonts, keyframes)
 scripts/generate-sounds.mjs   synthesises the five sign sounds into public/sounds
