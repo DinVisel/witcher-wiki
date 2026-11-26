@@ -25,7 +25,7 @@ A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations an
 - **Sound effects** for every sign and the welcome fanfare, with a global mute toggle remembered in `localStorage`.
 - **Keyboard shortcuts** 1–5 cast the signs on the Signs page.
 - **Storyline** timeline from the Conjunction of the Spheres to the Wild Hunt, each chapter drawn as an open book (illustration plate + text page); summaries and images come from the wiki, chapters fade in on scroll.
-- **Ride with Roach**: on the Story page a winding dirt road (SVG, with trees, grass and a milestone per chapter) runs past the books. Press "Jump on Roach" — Geralt (an original SVG mascot) leaps into the saddle with a hoof clip-clop, and Roach follows the road's curves as you scroll, turning to face the way the road bends and galloping while the page moves. The chapter she passes lights up, and the road ends at a campfire.
+- **Ride with Roach**: on the Story page a winding dirt road (SVG, with trees, grass, a milestone between chapters and a campfire at the end) swings across the whole page, disappearing behind the chapter books (on phones it runs down the left edge). Press "Jump on Roach" — Geralt (an original SVG mascot) leaps into the saddle with a hoof clip-clop, Roach rears up, and then follows the road's curves as you scroll, facing the way it bends and kicking up dust while the page moves. While waiting she swishes her tail, nods, flicks an ear and blinks; pat her and she rears with a neigh and a little heart. The chapter she passes lights up.
 - **Fan extras** (all tracked in a **Witcher's Journal** at `/journal`, saved in `localStorage`, with "Journal updated" toasts):
   - *Trial of the Signs* — a memory puzzle on the Signs page: repeat growing sequences of signs (with their sounds) for 5 rounds.
   - *Prepare for the contract* — a Bestiary quiz built live from the API: name a random monster's class out of four.
@@ -111,7 +111,7 @@ scripts/generate-sounds.mjs   synthesises the five sign sounds into public/sound
 ## Credits
 
 - Text and images: [Witcher Wiki](https://witcher.fandom.com/) contributors, **CC BY-SA**.
-- Sounds (signs, welcome fanfare, hooves): synthesised for this project by `scripts/generate-sounds.mjs` (original, no third-party audio).
+- Sounds (signs, welcome fanfare, hooves, neigh): synthesised for this project by `scripts/generate-sounds.mjs` (original, no third-party audio).
 - Fonts: Cinzel and Inter from Google Fonts (SIL Open Font License).
 
 Fan project, not affiliated with CD PROJEKT RED or Netflix.
