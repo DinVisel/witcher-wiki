@@ -6,6 +6,7 @@ import Button from "../components/Button";
 import Medallion from "../components/Medallion";
 import OpenBook from "../components/OpenBook";
 import BookCard from "../components/BookCard";
+import Clue from "../components/Clue";
 import ContractOfTheDay from "../components/ContractOfTheDay";
 import BurnReveal from "../components/effects/BurnReveal";
 
@@ -98,12 +99,13 @@ export default function HomePage() {
       </section>
 
       <section aria-labelledby="library-heading">
-        <div className="mb-10 text-center">
+        <div className="relative mb-10 text-center">
           <h2 id="library-heading" className="font-display text-3xl font-bold tracking-wide text-parchment">
             The Library
           </h2>
           <Ornament className="mt-3 text-gold/70" />
           <p className="mt-3 text-sm text-steel">Take a tome from the shelf.</p>
+          <Clue id="home" className="absolute right-0 top-0" />
         </div>
         <ul className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {books.map((b) => (

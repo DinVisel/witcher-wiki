@@ -4,9 +4,11 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import RedBackdrop from "../components/RedBackdrop";
 import TopFlourish from "../components/TopFlourish";
+import SensesOverlay from "../components/SensesOverlay";
 
 /**
- * Shared page frame: red backdrop, navbar, the current route, footer.
+ * Shared page frame: red backdrop, navbar, the current route, footer and the
+ * Witcher Senses overlay (when switched on).
  * Scrolls to top on navigation.
  */
 export default function Layout() {
@@ -33,6 +35,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Footer />
+      <SensesOverlay />
     </div>
   );
 }

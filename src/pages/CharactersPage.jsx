@@ -3,6 +3,7 @@ import { useFilterParam } from "../hooks/useFilterParam";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import ListingView from "../components/ListingView";
 import FilterChips from "../components/FilterChips";
+import Clue from "../components/Clue";
 
 /** Characters, filtered by the book of the saga they appear in (?book=). */
 export default function CharactersPage() {
@@ -14,7 +15,12 @@ export default function CharactersPage() {
       section={SECTIONS.characters}
       category={option.category}
       subtitle={`${SECTIONS.characters.description} Showing characters from “${option.label}”.`}
-      filters={<FilterChips options={CHARACTER_BOOKS} value={value} onChange={setValue} label="Book" />}
+      filters={
+        <div className="relative">
+          <FilterChips options={CHARACTER_BOOKS} value={value} onChange={setValue} label="Book" />
+          <Clue id="characters" className="absolute bottom-6 right-0" />
+        </div>
+      }
     />
   );
 }

@@ -6,6 +6,8 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import ListingView from "../components/ListingView";
 import SignCard from "../components/SignCard";
 import InfoButton from "../components/InfoButton";
+import Clue from "../components/Clue";
+import SignTrial from "../components/SignTrial";
 
 /** Keys 1–5 cast the signs. Ignored while typing in an input. */
 function useSignShortcuts(cast) {
@@ -37,7 +39,8 @@ export default function SignsPage() {
         className="relative"
         section={SECTIONS.signs}
         filters={
-          <div className="mb-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-steel">
+          <>
+          <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-steel">
             <InfoButton label="Which signs can be cast?" title="Which signs can be cast?">
               <p>
                 Only the five signs witchers use in the games can be cast here:{" "}
@@ -59,7 +62,10 @@ export default function SignsPage() {
                 {s.name}
               </span>
             ))}
+            <Clue id="signs" className="ml-auto" />
           </div>
+          <SignTrial />
+          </>
         }
         renderItem={(item) => <SignCard item={item} casting={casting} onCast={cast} onDone={finish} />}
       />

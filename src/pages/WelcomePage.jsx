@@ -4,6 +4,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { useSound } from "../hooks/useSound";
 import { useTimeout } from "../hooks/useTimeout";
+import { useJournal } from "../hooks/useJournal";
 import RedBackdrop from "../components/RedBackdrop";
 import TopFlourish from "../components/TopFlourish";
 import FireCanvas from "../components/effects/FireCanvas";
@@ -24,6 +25,15 @@ export default function WelcomePage() {
   const reduced = useReducedMotion();
   const play = useSound(0.8);
   const [entering, setEntering] = useState(false);
+  const [taps, setTaps] = useState(0);
+  const { unlock } = useJournal();
+
+  const tapMedallion = () => {
+    const next = taps + 1;
+    setTaps(next);
+    play("quen.wav");
+    if (next === 3) unlock("medallion");
+  };
 
   const enter = () => {
     if (entering) return;
@@ -55,7 +65,19 @@ export default function WelcomePage() {
           entering ? "scale-110 opacity-0 blur-sm" : ""
         }`}
       >
-        <Medallion className="size-20 origin-top motion-safe:animate-medallion sm:size-24" />
+        {/* easter egg: tap the medallion three times and it hums */}
+        <button
+          type="button"
+          onClick={tapMedallion}
+          aria-label="Wolf medallion"
+          title={taps >= 3 ? "The medallion hums…" : undefined}
+          className={`rounded-full ${taps >= 3 ? "drop-shadow-[0_0_18px_rgb(255_201_74/0.8)]" : ""}`}
+        >
+          <Medallion
+            key={taps}
+            className={`size-20 origin-top sm:size-24 ${taps > 0 ? "motion-safe:animate-shake" : "motion-safe:animate-medallion"}`}
+          />
+        </button>
         <p className="mt-8 font-display text-[10px] tracking-[0.5em] text-gold/90 motion-safe:animate-rise-in sm:text-xs">
           Chronicles of the Continent
         </p>

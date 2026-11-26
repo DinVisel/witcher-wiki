@@ -3,6 +3,8 @@ import { useFilterParam } from "../hooks/useFilterParam";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import ListingView from "../components/ListingView";
 import FilterChips from "../components/FilterChips";
+import Clue from "../components/Clue";
+import MonsterQuiz from "../components/MonsterQuiz";
 
 /** The Bestiary: a parchment monster book, filterable by monster class (?class=). */
 export default function MonstersPage() {
@@ -20,7 +22,15 @@ export default function MonstersPage() {
         section={SECTIONS.monsters}
         category={option.category}
         title={value ? `Bestiary · ${option.label}` : "Bestiary"}
-        filters={<FilterChips options={MONSTER_CLASSES} value={value} onChange={setValue} label="Monster class" />}
+        filters={
+          <>
+            <div className="relative">
+              <FilterChips options={MONSTER_CLASSES} value={value} onChange={setValue} label="Monster class" />
+              <Clue id="monsters" className="absolute bottom-6 right-0" />
+            </div>
+            <MonsterQuiz />
+          </>
+        }
       />
     </div>
   );
