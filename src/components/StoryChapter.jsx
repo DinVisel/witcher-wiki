@@ -3,13 +3,7 @@ import { itemPath, WIKI_SECTION } from "../config/sections";
 import { useInView } from "../hooks/useInView";
 import WikiImage from "./WikiImage";
 import OpenBook from "./OpenBook";
-
-/** Chapter numbers as Roman numerals (1–39 is plenty for the storyline). */
-function toRoman(n) {
-  const tens = ["", "X", "XX", "XXX"];
-  const ones = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"];
-  return tens[Math.floor(n / 10)] + ones[n % 10];
-}
+import { toRoman } from "../utils/road";
 
 /**
  * One timeline chapter drawn as an open book. Fades in when scrolled into view;
@@ -23,17 +17,10 @@ export default function StoryChapter({ chapter, preview, index, here = false }) 
   return (
     <li
       ref={ref}
-      className={`relative pl-10 transition-all duration-700 md:w-1/2 md:pl-0 ${
-        right ? "md:ml-auto md:pl-12" : "md:pr-12"
+      className={`relative pl-16 transition-all duration-700 md:w-1/2 md:pl-0 ${
+        right ? "md:ml-auto md:pl-24" : "md:pr-24"
       } ${inView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 motion-reduce:translate-y-0"}`}
     >
-      {/* dot on the timeline */}
-      <span
-        aria-hidden="true"
-        className={`absolute top-6 left-[9px] size-4 rounded-full border-2 border-gold shadow-[0_0_12px] shadow-gold/60 transition ${
-          right ? "md:-left-2" : "md:right-[-8px] md:left-auto"
-        } ${here ? "bg-quen" : "bg-ink"}`}
-      />
       {/* each chapter is an open book: an illustrated plate on the left, the text on the right */}
       <div
         className={`rounded-lg transition duration-500 ${

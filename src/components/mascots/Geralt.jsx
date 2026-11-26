@@ -1,10 +1,11 @@
 /**
  * A standing witcher mascot (original inline SVG): white hair, dark armour,
- * two swords on the back and the wolf medallion. `className` sets size/motion.
+ * two swords on the back and the wolf medallion. `className` sets size/motion;
+ * extra props (x, y, width, height) place it inside another SVG.
  */
-export default function Geralt({ className = "w-10" }) {
+export default function Geralt({ className = "w-10", ...svgProps }) {
   return (
-    <svg viewBox="0 0 40 84" className={className} aria-hidden="true">
+    <svg viewBox="0 0 40 84" className={className} aria-hidden="true" {...svgProps}>
       {/* swords crossed on the back */}
       <path d="M6 56 L34 8" className="stroke-steel" strokeWidth="2.5" strokeLinecap="round" />
       <path d="M34 56 L8 6" className="stroke-silver" strokeWidth="2" strokeLinecap="round" />

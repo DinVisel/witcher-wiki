@@ -44,10 +44,10 @@ function Rider() {
   );
 }
 
-/** Roach the horse. `className` sets the size (the SVG keeps its aspect ratio). */
-export default function Roach({ rider = false, galloping = false, className = "w-24" }) {
+/** Roach the horse. `className` sets the size; extra props (x, y, width, height) place it inside another SVG. */
+export default function Roach({ rider = false, galloping = false, className = "w-24", ...svgProps }) {
   return (
-    <svg viewBox="0 -34 124 128" className={className} aria-hidden="true">
+    <svg viewBox="0 -34 124 128" className={className} aria-hidden="true" {...svgProps}>
       <g className={galloping ? "motion-safe:animate-gallop" : ""}>
         {/* far legs and tail behind the body */}
         <Leg x={26} far swing="motion-safe:animate-leg-back" galloping={galloping} />

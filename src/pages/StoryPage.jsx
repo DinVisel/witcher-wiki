@@ -11,13 +11,14 @@ import PageHeader from "../components/PageHeader";
 import Loader from "../components/Loader";
 import ErrorMessage from "../components/ErrorMessage";
 import StoryChapter from "../components/StoryChapter";
-import RoachRide from "../components/RoachRide";
+import RoadTrail from "../components/RoadTrail";
+import Clue from "../components/Clue";
 
 const TITLES = STORYLINE.map((c) => c.title);
 
 /**
  * The storyline timeline: from the Conjunction of the Spheres to the Wild Hunt.
- * Geralt can jump on Roach, who then rides down the timeline as you scroll.
+ * Geralt can jump on Roach, who then follows a winding road past every chapter as you scroll.
  */
 export default function StoryPage() {
   useDocumentTitle("The Story");
@@ -26,9 +27,9 @@ export default function StoryPage() {
 
   // "idle" → "jumping" (Geralt's leap, ~0.7 s) → "riding"
   const [stage, setStage] = useState("idle");
-  // The chapter level with the riding mascot (it sticks at 42% of the screen height).
+  // The chapter level with the riding mascot (she rides at 45% of the screen height).
   const listRef = useRef(null);
-  const active = useActiveChild(listRef, stage === "riding", 0.47);
+  const active = useActiveChild(listRef, stage === "riding", 0.45);
   const reduced = useReducedMotion();
   const play = useSound(0.7);
   useTimeout(() => setStage("riding"), stage === "jumping" ? (reduced ? 50 : 700) : null);
@@ -48,10 +49,11 @@ export default function StoryPage() {
       {error && <ErrorMessage message={error.message} onRetry={retry} />}
       {data && (
         <div className="relative">
-          <RoachRide stage={stage} onJump={jump} onDismount={() => setStage("idle")} />
+          <RoadTrail stage={stage} onJump={jump} onDismount={() => setStage("idle")} listRef={listRef} />
+          <Clue id="story" className="absolute right-2 top-10 z-30" />
           <ol
             ref={listRef}
-            className="relative space-y-10 pt-36 before:absolute before:inset-y-0 before:left-4 before:w-px before:bg-linear-to-b before:from-gold/0 before:via-gold/60 before:to-gold/0 md:pt-56 md:before:left-1/2"
+            className="relative space-y-12 pb-[40vh] pt-40 md:pt-60"
           >
             {STORYLINE.map((chapter, i) => (
               <StoryChapter
