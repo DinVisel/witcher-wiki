@@ -103,6 +103,20 @@ const SOUNDS = {
       return arpeggio * 0.35 + chord * 0.25 + drum(t, 0) + drum(t, 0.8) * 1.2;
     });
   })(),
+  // Hooves: a galloping clip-clop — short woody knocks in a da-da-dum rhythm.
+  "hooves.wav": (() => {
+    const noise = lowNoise();
+    const hits = [0, 0.1, 0.2, 0.42, 0.52, 0.62, 0.84, 0.94, 1.04];
+    const knock = (t, start, pitch) => {
+      if (t < start) return 0;
+      const local = t - start;
+      const e = Math.exp(-local * 55);
+      return (sin(pitch * (1 + 2 * Math.exp(-local * 40)), local) * 0.8 + noise(2500) * 1.2) * e;
+    };
+    return render(1.3, (t) =>
+      hits.reduce((s, start, i) => s + knock(t, start, i % 3 === 2 ? 520 : 760) * (i % 3 === 2 ? 1 : 0.7), 0),
+    );
+  })(),
 };
 
 /** Encode float samples as a 16-bit PCM WAV buffer (normalised to -1 dBFS). */

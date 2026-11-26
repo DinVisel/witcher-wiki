@@ -11,8 +11,11 @@ function toRoman(n) {
   return tens[Math.floor(n / 10)] + ones[n % 10];
 }
 
-/** One timeline chapter drawn as an open book. Fades in when scrolled into view; alternates sides on md+. */
-export default function StoryChapter({ chapter, preview, index }) {
+/**
+ * One timeline chapter drawn as an open book. Fades in when scrolled into view;
+ * alternates sides on md+. `here` = Roach is riding past this book, which glows.
+ */
+export default function StoryChapter({ chapter, preview, index, here = false }) {
   const [ref, inView] = useInView();
   const right = index % 2 === 1;
   const title = preview?.title ?? chapter.title;
@@ -27,11 +30,16 @@ export default function StoryChapter({ chapter, preview, index }) {
       {/* dot on the timeline */}
       <span
         aria-hidden="true"
-        className={`absolute top-6 left-[9px] size-4 rounded-full border-2 border-gold bg-ink shadow-[0_0_12px] shadow-gold/60 ${
+        className={`absolute top-6 left-[9px] size-4 rounded-full border-2 border-gold shadow-[0_0_12px] shadow-gold/60 transition ${
           right ? "md:-left-2" : "md:right-[-8px] md:left-auto"
-        }`}
+        } ${here ? "bg-quen" : "bg-ink"}`}
       />
       {/* each chapter is an open book: an illustrated plate on the left, the text on the right */}
+      <div
+        className={`rounded-lg transition duration-500 ${
+          here ? "scale-[1.02] drop-shadow-[0_0_22px_rgb(255_201_74/0.55)]" : ""
+        }`}
+      >
       <OpenBook
         compact
         split="lg"
@@ -64,6 +72,7 @@ export default function StoryChapter({ chapter, preview, index }) {
           </div>
         }
       />
+      </div>
     </li>
   );
 }
