@@ -103,6 +103,19 @@ const SOUNDS = {
       return arpeggio * 0.35 + chord * 0.25 + drum(t, 0) + drum(t, 0.8) * 1.2;
     });
   })(),
+  // Neigh: a rising then falling whinny — buzzy harmonics with a fast vibrato.
+  "neigh.wav": (() => {
+    let phase = 0;
+    return render(1.1, (t) => {
+      const contour = t < 0.18 ? 480 + (t / 0.18) * 420 : 900 * Math.exp(-(t - 0.18) * 1.1);
+      const f = contour * (1 + 0.07 * sin(13, t));
+      phase += (2 * Math.PI * f) / RATE;
+      let s = 0;
+      for (let n = 1; n <= 8; n++) s += (Math.sin(phase * n) * (n === 3 || n === 4 ? 1 : 0.5)) / n;
+      const breath = (Math.random() * 2 - 1) * 0.08;
+      return (s + breath) * env(t, 0.05, 1.1, 1.4) * (0.75 + 0.25 * sin(13, t));
+    });
+  })(),
   // Hooves: a galloping clip-clop — short woody knocks in a da-da-dum rhythm.
   "hooves.wav": (() => {
     const noise = lowNoise();

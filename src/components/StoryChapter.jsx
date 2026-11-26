@@ -18,7 +18,7 @@ export default function StoryChapter({ chapter, preview, index, here = false }) 
     <li
       ref={ref}
       className={`relative pl-16 transition-all duration-700 md:w-1/2 md:pl-0 ${
-        right ? "md:ml-auto md:pl-24" : "md:pr-24"
+        right ? "md:ml-auto md:pl-12" : "md:pr-12"
       } ${inView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 motion-reduce:translate-y-0"}`}
     >
       {/* each chapter is an open book: an illustrated plate on the left, the text on the right */}

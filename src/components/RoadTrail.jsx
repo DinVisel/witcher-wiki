@@ -3,52 +3,64 @@ import { buildRoad, pointAtY, seeded, toRoman } from "../utils/road";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { useIsScrolling } from "../hooks/useIsScrolling";
 import { useJournal } from "../hooks/useJournal";
+import { useSound } from "../hooks/useSound";
 import { useTimeout } from "../hooks/useTimeout";
 import Roach from "./mascots/Roach";
 import Geralt from "./mascots/Geralt";
 import Traveller from "./mascots/Traveller";
 
-/** Travellers on the road: where they stand (0–1 down the road) and what they say. */
+/**
+ * Travellers on the road. `gap` = they stand in the gap above that chapter
+ * (so they're never hidden by a book); `at` is the fallback position (0–1).
+ */
 const TRAVELLERS = [
-  { kind: "merchant", at: 0.3, label: "A pedlar on the road", lines: ["“Care for a round of cards,", "witcher? Winner takes all.”"] },
-  { kind: "dog", at: 0.56, label: "A stray dog", lines: ["Woof! The dog trots along", "beside Roach for a while."] },
-  { kind: "drowner", at: 0.82, label: "Something in a puddle", lines: ["Grrblbl… a drowner! Next", "time, bring a silver sword."] },
+  { kind: "merchant", gap: 3, at: 0.3, label: "A pedlar on the road", lines: ["“Care for a round of cards,", "witcher? Winner takes all.”"] },
+  { kind: "dog", gap: 6, at: 0.56, label: "A stray dog", lines: ["Woof! The dog trots along", "beside Roach for a while."] },
+  { kind: "drowner", gap: 9, at: 0.82, label: "Something in a puddle", lines: ["Grrblbl… a drowner! Next", "time, bring a silver sword."] },
 ];
 
 const BUBBLE_W = 178;
+const DUST = ["[animation-delay:0ms]", "[animation-delay:200ms]", "[animation-delay:400ms]"];
 
 /**
  * The winding road on the Story page, drawn in two SVG layers:
- * - behind the chapter books: the dirt road, trees, grass and a milestone per chapter;
- * - above them: the travellers, their speech bubbles and Roach with Geralt.
+ * - behind the chapter books: the dirt road (on md+ it swings across the full
+ *   width, disappearing behind the books), trees, grass, a milestone in the gap
+ *   above each chapter and a campfire at the end;
+ * - in front of the books: the travellers, speech bubbles and Roach with Geralt.
  * While riding, Roach stays at 45% of the screen height and follows the road's
  * curve there; her position is an SVG transform attribute (drawing data), not a CSS style.
+ * Roach is alive: she swishes her tail and nods while waiting, rears when Geralt
+ * mounts, kicks up dust while galloping and rears with a neigh when patted.
  *
  * Props: stage ("idle" | "jumping" | "riding"), onJump, onDismount,
- * listRef (the <ol> of chapters, used to place the milestones).
+ * listRef (the <ol> of chapters, used to place milestones and travellers).
  */
 export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
   const rootRef = useRef(null);
   const wide = useMediaQuery("(min-width: 48rem)");
-  // w/h: road area size; marks: chapter centres; below: page height under the area; vh: window height
-  const [box, setBox] = useState({ w: 0, h: 0, marks: [], below: 0, vh: 0 });
+  // w/h: road area; gaps: y of the gap above each chapter; below: page height under the area; vh: window height
+  const [box, setBox] = useState({ w: 0, h: 0, gaps: [], below: 0, vh: 0 });
   const [anchorY, setAnchorY] = useState(null);
   const [bubble, setBubble] = useState(null);
   const [greeted, setGreeted] = useState([]);
+  const [rear, setRear] = useState(0); // pats so far; each one replays the rear-up animation
+  const [heart, setHeart] = useState(null);
   const riding = stage === "riding";
   const galloping = useIsScrolling(riding);
   const { unlock } = useJournal();
+  const play = useSound(0.6);
 
-  // Measure the road area and the centre of every chapter (re-measured on resize / image loads).
+  // Measure the road area and the chapter positions (re-measured on resize / image loads).
   useEffect(() => {
     const root = rootRef.current;
     const list = listRef.current;
     if (!root || !list) return undefined;
     const measure = () => {
-      const marks = [...list.children].map((li) => list.offsetTop + li.offsetTop + li.offsetHeight / 2);
+      const gaps = [...list.children].map((li) => list.offsetTop + li.offsetTop - 24);
       const bottom = root.getBoundingClientRect().bottom + window.scrollY;
       const below = document.documentElement.scrollHeight - bottom;
-      setBox({ w: root.clientWidth, h: root.clientHeight, marks, below, vh: window.innerHeight });
+      setBox({ w: root.clientWidth, h: root.clientHeight, gaps, below, vh: window.innerHeight });
     };
     const observer = new ResizeObserver(measure);
     observer.observe(root);
@@ -73,7 +85,8 @@ export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
       startY,
       endY,
       width: wide ? 26 : 14,
-      ...buildRoad({ cx, amplitude: wide ? 56 : 12, startY, endY, segment: wide ? 320 : 240 }),
+      // md+: swing almost edge to edge, behind the books; phones: stay in the left gutter
+      ...buildRoad({ cx, amplitude: wide ? box.w / 2 - 70 : 12, startY, endY, segment: wide ? 560 : 240 }),
     };
   }, [box.w, box.h, box.vh, box.below, wide]);
 
@@ -109,21 +122,33 @@ export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
     if (greeted.length === TRAVELLERS.length) unlock("travellers");
   }, [greeted, unlock]);
   useTimeout(() => setBubble(null), bubble ? 3500 : null);
+  useTimeout(() => setHeart(null), heart ? 1200 : null);
 
   const greet = (kind) => {
     setBubble(kind);
     setGreeted((g) => (g.includes(kind) ? g : [...g, kind]));
   };
+  const pat = () => {
+    setRear((r) => r + 1);
+    setHeart((h) => (h ?? 0) + 1);
+    play("neigh.wav");
+  };
+
+  // Where each traveller stands: in a gap between books when the chapters are measured.
+  const travellerY = (t) =>
+    box.gaps[t.gap] != null && box.gaps[t.gap] > road.startY && box.gaps[t.gap] < road.endY
+      ? box.gaps[t.gap]
+      : road.startY + t.at * (road.endY - road.startY);
 
   // Static scenery, rebuilt only when the road changes.
   const scenery = useMemo(() => {
     if (!road) return null;
     const items = [];
-    const gap = wide ? 150 : 110;
+    const gap = wide ? 120 : 110;
     for (let y = road.startY + 60, i = 0; y < road.endY - 30; y += gap, i++) {
       const p = pointAtY(road.samples, y + seeded(i) * 40);
       const side = i % 2 === 0 ? 1 : -1;
-      const x = p.x + side * (road.width / 2 + (wide ? 16 : 8) + seeded(i + 99) * (wide ? 14 : 4));
+      const x = p.x + side * (road.width / 2 + (wide ? 16 : 8) + seeded(i + 99) * (wide ? 18 : 4));
       const s = wide ? 1 : 0.6;
       if (x < 6 || x > box.w - 6) continue;
       items.push(
@@ -139,11 +164,26 @@ export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
         ),
       );
     }
+    // a milestone in the gap above every chapter (so it's never behind a book)
+    box.gaps.forEach((gy, i) => {
+      if (gy < road.startY + 40 || gy > road.endY) return;
+      const p = pointAtY(road.samples, gy);
+      const side = p.x > box.w - 60 ? -1 : 1;
+      const x = p.x + side * (road.width / 2 + (wide ? 14 : 4));
+      items.push(
+        <g key={`m${i}`} transform={`translate(${x} ${gy + 8}) scale(${wide ? 1 : 0.7})`}>
+          <rect x="-2" y="-6" width="4" height="16" className="fill-[#3b2414]" />
+          <rect x="-13" y="-20" width="26" height="15" rx="2" className="fill-[#7a5434] stroke-gold/70" strokeWidth="1" />
+          <text x="0" y="-9" textAnchor="middle" className="fill-parchment font-display text-[9px] font-bold">
+            {toRoman(i + 1)}
+          </text>
+        </g>,
+      );
+    });
     // the end of the road: a campfire and a sign
     const end = road.samples[road.samples.length - 1];
-    const fs = wide ? 1 : 0.7;
     items.push(
-      <g key="end" transform={`translate(${end.x} ${end.y + 6}) scale(${fs})`}>
+      <g key="end" transform={`translate(${end.x} ${end.y + 6}) scale(${wide ? 1 : 0.7})`}>
         <ellipse cx="0" cy="10" rx="30" ry="8" className="fill-igni/20" />
         <path d="M-12 10 L12 4 M-12 4 L12 10" className="stroke-[#3b2414]" strokeWidth="4" strokeLinecap="round" />
         <path d="M0 -18 C8 -8 9 0 0 6 C-9 0 -8 -8 0 -18Z" className="fill-igni motion-safe:animate-pulse" />
@@ -153,23 +193,8 @@ export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
         </text>
       </g>,
     );
-    box.marks.forEach((my, i) => {
-      if (my < road.startY || my > road.endY) return;
-      const p = pointAtY(road.samples, my);
-      const side = wide ? (i % 2 === 0 ? 1 : -1) : -1;
-      const x = p.x + side * (road.width / 2 + (wide ? 14 : 4));
-      items.push(
-        <g key={`m${i}`} transform={`translate(${x} ${my}) scale(${wide ? 1 : 0.7})`}>
-          <rect x="-2" y="-6" width="4" height="22" className="fill-[#3b2414]" />
-          <rect x="-13" y="-20" width="26" height="15" rx="2" className="fill-[#7a5434] stroke-gold/70" strokeWidth="1" />
-          <text x="0" y="-9" textAnchor="middle" className="fill-parchment font-display text-[9px] font-bold">
-            {toRoman(i + 1)}
-          </text>
-        </g>,
-      );
-    });
     return items;
-  }, [road, box.marks, box.w, wide]);
+  }, [road, box.gaps, box.w, wide]);
 
   if (!road) return <div ref={rootRef} className="pointer-events-none absolute inset-0" />;
 
@@ -190,10 +215,11 @@ export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
         {scenery}
       </svg>
 
-      {/* above the books: travellers and the rider */}
+      {/* in front of the books: travellers and the rider */}
       <svg width={box.w} height={box.h} className="absolute inset-0 z-20">
         {TRAVELLERS.map((t) => {
-          const p = pointAtY(road.samples, road.startY + t.at * (road.endY - road.startY));
+          const ty = travellerY(t);
+          const p = pointAtY(road.samples, ty);
           const bx = p.x + tw / 2 + 6 + BUBBLE_W > box.w ? p.x - tw / 2 - 6 - BUBBLE_W : p.x + tw / 2 + 6;
           return (
             <g key={t.kind}>
@@ -236,19 +262,62 @@ export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
           </g>
         )}
 
-        {/* Roach (with her rider) on the road; flipped when the road heads left */}
+        {/* dust kicked up behind the hooves while galloping */}
+        {galloping && (
+          <g transform={`translate(${rider.x - facing * rw * 0.42} ${rider.y - 2})`} aria-hidden="true">
+            {DUST.map((delay, i) => (
+              <circle
+                key={delay}
+                cx={-facing * i * 7}
+                cy={-i * 2}
+                r={wide ? 6 : 3}
+                className={`fill-parchment/40 origin-center [transform-box:fill-box] motion-safe:animate-dust ${delay}`}
+              />
+            ))}
+          </g>
+        )}
+
+        {/* Roach (with her rider) on the road; flipped when the road heads left; pat her! */}
         <g transform={`translate(${rider.x} ${rider.y})`}>
           <g transform={facing < 0 ? "scale(-1 1)" : undefined}>
-            <Roach
-              rider={riding}
-              galloping={galloping}
-              className="drop-shadow-[0_6px_6px_rgb(0_0_0/0.6)]"
-              x={-rw / 2}
-              y={-rh * 0.93}
-              width={rw}
-              height={rh}
-            />
+            {/* a new key replays the rear-up: when Geralt mounts and on every pat */}
+            <g
+              key={`${riding}-${rear}`}
+              role="button"
+              tabIndex={0}
+              aria-label="Pat Roach"
+              onClick={pat}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  pat();
+                }
+              }}
+              className={`pointer-events-auto cursor-pointer outline-none origin-bottom-left [transform-box:fill-box] ${rear || riding ? "motion-safe:animate-rear" : ""}`}
+            >
+              <Roach
+                rider={riding}
+                galloping={galloping}
+                className="drop-shadow-[0_6px_6px_rgb(0_0_0/0.6)]"
+                x={-rw / 2}
+                y={-rh * 0.93}
+                width={rw}
+                height={rh}
+              />
+            </g>
           </g>
+          {heart && (
+            <text
+              key={heart}
+              x="0"
+              y={-rh * 0.95}
+              textAnchor="middle"
+              className="fill-[#ff5a6a] text-[18px] motion-safe:animate-float-up"
+              aria-hidden="true"
+            >
+              ♥
+            </text>
+          )}
         </g>
       </svg>
 
@@ -267,7 +336,7 @@ export default function RoadTrail({ stage, onJump, onDismount, listRef }) {
             >
               Dismount
             </button>
-            <p className="text-xs text-parchment/70">Scroll — Roach follows the road through the story.</p>
+            <p className="text-xs text-parchment/70">Scroll — Roach follows the road through the story. (You can pat her.)</p>
           </>
         ) : (
           <button

@@ -52,19 +52,32 @@ export default function Roach({ rider = false, galloping = false, className = "w
         {/* far legs and tail behind the body */}
         <Leg x={26} far swing="motion-safe:animate-leg-back" galloping={galloping} />
         <Leg x={80} far swing="motion-safe:animate-leg-front" galloping={galloping} />
-        <path d="M22 40 C6 44 2 64 10 80 C14 66 16 54 26 48Z" className={DARK} />
+        {/* tail: swishes while waiting, streams fast while galloping (pivots at its root) */}
+        <g
+          className={`origin-top-right [transform-box:fill-box] ${
+            galloping ? "motion-safe:animate-tail-gallop" : "motion-safe:animate-tail-swish"
+          }`}
+        >
+          <path d="M22 40 C6 44 2 64 10 80 C14 66 16 54 26 48Z" className={DARK} />
+        </g>
 
-        {/* body, neck and head */}
+        {/* body */}
         <ellipse cx="58" cy="50" rx="37" ry="17" className={COAT} />
-        <path d="M80 42 L96 14 L108 20 L96 54Z" className={COAT} />
-        <path d="M96 12 C104 6 115 12 118 22 L112 29 C107 27 101 26 96 24Z" className={COAT} />
-        <path d="M112 22 L118 22 L116 28 L111 28Z" className="fill-[#5e3820]" />
-        <path d="M98 10 L100 2 L104 10Z" className={COAT} />
-        <circle cx="106" cy="16" r="1.4" className="fill-ink" />
-        {/* dark mane along the neck */}
-        <path d="M96 11 C88 18 83 30 79 42 L85 41 C89 30 93 21 100 14Z" className={DARK} />
-        {/* bridle and reins */}
-        <path d="M100 13 L112 25 M98 22 L108 27" className="fill-none stroke-[#3a0507]" strokeWidth="1.2" />
+
+        {/* neck and head: an occasional nod while waiting (pivots at the base of the neck) */}
+        <g className={galloping ? "" : "origin-bottom-left [transform-box:fill-box] motion-safe:animate-head-nod"}>
+          <path d="M80 42 L96 14 L108 20 L96 54Z" className={COAT} />
+          <path d="M96 12 C104 6 115 12 118 22 L112 29 C107 27 101 26 96 24Z" className={COAT} />
+          <path d="M112 22 L118 22 L116 28 L111 28Z" className="fill-[#5e3820]" />
+          <g className="origin-bottom [transform-box:fill-box] motion-safe:animate-ear-flick">
+            <path d="M98 10 L100 2 L104 10Z" className={COAT} />
+          </g>
+          <circle cx="106" cy="16" r="1.4" className="fill-ink origin-center [transform-box:fill-box] motion-safe:animate-blink" />
+          {/* dark mane along the neck */}
+          <path d="M96 11 C88 18 83 30 79 42 L85 41 C89 30 93 21 100 14Z" className={DARK} />
+          {/* bridle and reins */}
+          <path d="M100 13 L112 25 M98 22 L108 27" className="fill-none stroke-[#3a0507]" strokeWidth="1.2" />
+        </g>
 
         {/* saddle blanket and saddle */}
         <path d="M44 34 L72 34 L74 50 L42 50Z" className="fill-velvet" />
