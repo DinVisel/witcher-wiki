@@ -25,6 +25,7 @@ A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations an
 - **Sound effects** for every sign and the welcome fanfare, with a global mute toggle remembered in `localStorage`.
 - **Keyboard shortcuts** 1–5 cast the signs on the Signs page.
 - **Storyline** timeline from the Conjunction of the Spheres to the Wild Hunt, each chapter drawn as an open book (illustration plate + text page); summaries and images come from the wiki, chapters fade in on scroll.
+- **Ride with Roach**: on the Story page, press "Jump on Roach" — Geralt (an original SVG mascot) leaps into the saddle with a hoof clip-clop, and Roach then rides down the timeline as you scroll (CSS `position: sticky`, no JS positioning), galloping while the page moves; the chapter she passes lights up.
 - Themed pages: parchment **Bestiary** with "Weak to" chips on monster pages, glowing rune panel for **Signs**.
 - **Contract of the day** on the home page (same monster for everyone all day).
 - Swinging wolf-medallion loader and a custom 404 ("You've strayed from the Path").
@@ -60,6 +61,7 @@ Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop a
 | Sign effects | Keys 1–5 and Cast buttons for all five signs; Quen toggles off; Igni's canvas is removed after the effect | ✅ |
 | Deploy | Direct load + refresh of deep links (`/monsters/Drowner`), sounds and favicon served by Vercel; no console errors | ✅ |
 | Responsive | 375 px: no horizontal scroll on Welcome, Home, Characters | ✅ |
+| Roach ride | "Jump on Roach" plays the hoof sound and switches to Dismount; Roach stays level on screen while the timeline scrolls; the chapter level with her glows (checked at several scroll positions); fits at 375 px | ✅ |
 | Accessibility | `prefers-reduced-motion`: static fire glow, fade instead of burn; aria labels on cast/mute/menu buttons; skip link | ✅ |
 | Data quality | Checked image/summary coverage per category against the live API; cards with images are shown first, and Locations uses the best-covered categories | ✅ |
 
@@ -101,7 +103,7 @@ scripts/generate-sounds.mjs   synthesises the five sign sounds into public/sound
 ## Credits
 
 - Text and images: [Witcher Wiki](https://witcher.fandom.com/) contributors, **CC BY-SA**.
-- Sounds (signs + welcome fanfare): synthesised for this project by `scripts/generate-sounds.mjs` (original, no third-party audio).
+- Sounds (signs, welcome fanfare, hooves): synthesised for this project by `scripts/generate-sounds.mjs` (original, no third-party audio).
 - Fonts: Cinzel and Inter from Google Fonts (SIL Open Font License).
 
 Fan project, not affiliated with CD PROJEKT RED or Netflix.
