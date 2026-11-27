@@ -11,12 +11,12 @@ import FireCanvas from "../components/effects/FireCanvas";
 import Medallion from "../components/Medallion";
 import MuteButton from "../components/MuteButton";
 
-/** Fanfare played on Enter. Replace the file in public/sounds to use your own. */
-const WELCOME_SOUND = "welcome.wav";
+/** Played on Enter: the "Quest Completed" jingle from The Witcher 3 (credited in the README). */
+const WELCOME_SOUND = "quest-completed.mp3";
 
 /**
  * The opening scene: deep red backdrop with the curved ornament band, a wall of
- * fire and a burning title. "Enter" plays the fanfare, lifts the band away and
+ * fire and a burning title. "Enter" plays the quest-completed jingle, lifts the band away and
  * the home page burns into view.
  */
 export default function WelcomePage() {

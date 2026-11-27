@@ -19,10 +19,10 @@ A fan-made wiki of **The Witcher** — characters, bestiary, signs, locations an
 - Navbar (with mobile menu) + footer, one consistent dark theme, responsive from 375 px up.
 
 **Extras**
-- **Welcome scene** (`/`): deep red backdrop with a curved red-and-gold ornament band, a canvas wall of fire with drifting embers and a flickering burning title. "Enter" plays a fanfare, lifts the band away and the home page **burns into view** (a noise-based dissolve on `<canvas>`). The same red backdrop is used on every page.
+- **Welcome scene** (`/`): deep red backdrop with a curved red-and-gold ornament band, a canvas wall of fire with drifting embers and a flickering burning title. "Enter" plays the Witcher 3 "Quest Completed" jingle, lifts the band away and the home page **burns into view** (a noise-based dissolve on `<canvas>`). The same red backdrop is used on every page.
 - **Book-themed home**: the intro is written in an open leather-bound book, the sections are tomes on a shelf, and the contract of the day is a notice pinned with a wax seal.
 - **Cast the signs**: Igni (canvas fire particles + flash), Aard (shockwave rings + card shake), Quen (shield bubble, cast again to dismiss), Yrden (spinning rune trap), Axii (hypnotic rings + blur).
-- **Sound effects** for every sign and the welcome fanfare, with a global mute toggle remembered in `localStorage`.
+- **Sound effects** for every sign, Roach and the welcome jingle, with a global mute toggle remembered in `localStorage`.
 - **Keyboard shortcuts** 1–5 cast the signs on the Signs page.
 - **Storyline** timeline from the Conjunction of the Spheres to the Wild Hunt, each chapter drawn as an open book (illustration plate + text page); summaries and images come from the wiki, chapters fade in on scroll.
 - **Ride with Roach**: on the Story page a winding dirt road (SVG, with trees, grass, a milestone between chapters and a campfire at the end) swings across the whole page, disappearing behind the chapter books (on phones it runs down the left edge). Press "Jump on Roach" — Geralt (an original SVG mascot) leaps into the saddle with a hoof clip-clop, Roach rears up, and then follows the road's curves as you scroll, facing the way it bends and kicking up dust while the page moves. While waiting she swishes her tail, nods, flicks an ear and blinks; pat her and she rears with a neigh and a little heart. The chapter she passes lights up.
@@ -57,7 +57,7 @@ Manual test pass on the dev server and the live Vercel deploy (Chrome, desktop a
 
 | Area | What was checked | Result |
 |---|---|---|
-| Welcome → Home | Enter plays the fanfare, the ornament band lifts away, home burns into view; sound keeps playing after the route change and ends with the burn; refresh on `/home` does not replay it | ✅ |
+| Welcome → Home | Enter plays the quest-completed jingle, the ornament band lifts away, home burns into view; the jingle keeps playing after the route change into Home; refresh on `/home` does not replay it | ✅ |
 | Navigation | Every navbar link incl. Home, active link highlight, mobile menu (below 1024 px) opens and closes after navigating, logo → welcome page | ✅ |
 | Listings | Bestiary "Load more" appends (21 → 45), button hides at the end of a list (Necrophages, 21 items) | ✅ |
 | Search & filters | Name filter reacts while typing ("grif" → Archgriffin); class / book / location chips reset the list and survive refresh (`?class=Necrophages`); global search keeps `?q=` in the URL and skips disambiguation pages | ✅ |
@@ -111,7 +111,8 @@ scripts/generate-sounds.mjs   synthesises the five sign sounds into public/sound
 ## Credits
 
 - Text and images: [Witcher Wiki](https://witcher.fandom.com/) contributors, **CC BY-SA**.
-- Sounds (signs, welcome fanfare, hooves, neigh): synthesised for this project by `scripts/generate-sounds.mjs` (original, no third-party audio).
+- Sounds (signs, hooves, neigh): synthesised for this project by `scripts/generate-sounds.mjs` (original).
+- Welcome jingle (`public/sounds/quest-completed.mp3`): the "Quest Completed" sound from *The Witcher 3: Wild Hunt* © CD PROJEKT RED, used here only in this non-commercial student fan project.
 - Fonts: Cinzel and Inter from Google Fonts (SIL Open Font License).
 
 Fan project, not affiliated with CD PROJEKT RED or Netflix.
